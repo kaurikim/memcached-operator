@@ -3,6 +3,7 @@ module example.com/memcached-operator
 go 1.24.0
 
 require (
+	github.com/juju/errors v1.0.0
 	github.com/onsi/ginkgo/v2 v2.22.0
 	github.com/onsi/gomega v1.36.1
 	k8s.io/apimachinery v0.33.0
