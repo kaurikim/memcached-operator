@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -50,6 +51,16 @@ func (r *MemcachedReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 	_ = logf.FromContext(ctx)
 
 	// TODO(user): your logic here
+	var cm corev1.ConfigMap
+	log := logf.Log.WithName("memcached").WithValues("memcached", req.Name)
+	if err := r.Get(ctx, req.NamespacedName, &cm); err != nil {
+		log.Info("ConfigMap not found", "name", req.Name)
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	log.Info("req", req)
+
+	log.Info("ConfigMap changed", "namespace", cm.Namespace, "name", cm.Name, "data", cm.Data)
 
 	return ctrl.Result{}, nil
 }
